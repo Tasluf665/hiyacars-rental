@@ -7,7 +7,7 @@ export default () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="SplashScreen" />
-      <Stack.Screen name="WelcomeScreen" />
+      <Stack.Screen name="OnboardingScreen" />
       <Stack.Screen name="LoginScreen" />
     </Stack>
   );
