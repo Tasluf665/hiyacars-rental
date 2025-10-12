@@ -1,272 +1,262 @@
 import React, { useState } from 'react';
 import {
-    StyleSheet,
-    Text,
     View,
-    TextInput,
+    Text,
+    StyleSheet,
+    Image,
     TouchableOpacity,
-    SafeAreaView,
-    KeyboardAvoidingView,
-    Platform,
-    Alert,
     ScrollView,
+    TextInput
 } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
+// Assuming you have a component structure for standard inputs
+import EmailInput from '../../components/EmailInput';
+import PasswordInput from '../../components/PasswordInput';
+import CustomButton from '../../components/CustomButton';
 import Colors from '../../constant/Colors';
-import customeFonts from '../../constant/customeFonts';
+import CustomeFonts from '../../constant/customeFonts';
 
-export default function SignUpScreen({ navigation }) {
+// Since the Country field is a standard text input without custom styling needed, 
+// we will define a simple reusable component for it here, similar to the existing inputs.
+const BasicTextInput = ({ value, onChangeText, placeholder = "Input" }) => (
+    <View style={basicInputStyles.container}>
+        <TextInput
+            style={basicInputStyles.input}
+            placeholder={placeholder}
+            placeholderTextColor={Colors.TextSecondary}
+            value={value}
+            onChangeText={onChangeText}
+            autoCapitalize="words"
+            autoCorrect={false}
+        />
+    </View>
+);
+
+const basicInputStyles = StyleSheet.create({
+    container: {
+        width: '100%',
+        marginBottom: 16,
+    },
+    input: {
+        backgroundColor: Colors.White,
+        borderRadius: 12,
+        padding: 16,
+        fontSize: 16,
+        borderWidth: 1,
+        borderColor: Colors.Border,
+        color: Colors.TextPrimary,
+        fontFamily: CustomeFonts.Lato_Regular,
+    },
+});
+
+
+const SignUpScreen = () => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [country, setCountry] = useState('');
 
-    const validateForm = () => {
-        if (!fullName || !email || !password || !confirmPassword) {
-            Alert.alert('Error', 'Please fill in all fields');
-            return false;
-        }
-
-        if (fullName.trim().length < 2) {
-            Alert.alert('Error', 'Please enter your full name');
-            return false;
-        }
-
-        if (!email.includes('@') || !email.includes('.')) {
-            Alert.alert('Error', 'Please enter a valid email address');
-            return false;
-        }
-
-        if (password.length < 6) {
-            Alert.alert('Error', 'Password must be at least 6 characters long');
-            return false;
-        }
-
-        if (password !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match');
-            return false;
-        }
-
-        return true;
+    // Placeholder handlers
+    const handleSignUp = () => {
+        console.log('Sign Up pressed', { fullName, email, password, country });
+        // After successful sign up, navigate to the main part of the app or home screen
+        // router.replace('/HomeScreen');
     };
 
-    const handleSignUp = async () => {
-        if (!validateForm()) {
-            return;
-        }
-
-        setIsLoading(true);
-
-        try {
-            // TODO: Implement actual sign up logic here
-            // For now, just simulate a sign up process
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // Navigate to main app after successful sign up
-            // navigation.navigate('Main');
-            Alert.alert('Success', 'Account created successfully!');
-        } catch (error) {
-            Alert.alert('Error', 'Sign up failed. Please try again.');
-        } finally {
-            setIsLoading(false);
-        }
+    const handleLogin = () => {
+        router.back(); // Go back to LoginScreen
     };
 
-    const handleSignIn = () => {
-        router.back();
+    const handleAppleLogin = () => {
+        console.log('Apple login pressed');
+    };
+
+    const handleGoogleLogin = () => {
+        console.log('Google login pressed');
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.keyboardView}
-            >
-                <ScrollView
-                    contentContainerStyle={styles.scrollContent}
-                    showsVerticalScrollIndicator={false}
-                >
-                    <View style={styles.content}>
-                        {/* Header */}
-                        <View style={styles.header}>
-                            <Text style={styles.title}>Create Account</Text>
-                            <Text style={styles.subtitle}>Sign up to get started</Text>
-                        </View>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                {/* Logo Section (Matches LoginScreen layout) */}
+                <View style={styles.logoContainer}>
+                    <Image
+                        source={require('../../assets/icons/car_icon_main.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
+                </View>
 
-                        {/* Form */}
-                        <View style={styles.form}>
-                            <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Full Name</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Enter your full name"
-                                    placeholderTextColor={Colors.DarkGray}
-                                    value={fullName}
-                                    onChangeText={setFullName}
-                                    autoCapitalize="words"
-                                    autoCorrect={false}
-                                />
-                            </View>
+                {/* Header Title */}
+                <View style={styles.headerContainer}>
+                    <Text style={styles.title}>Sign Up</Text>
+                </View>
 
-                            <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Email</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Enter your email"
-                                    placeholderTextColor={Colors.DarkGray}
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    keyboardType="email-address"
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                />
-                            </View>
+                {/* Input Fields */}
+                <View style={styles.inputSection}>
+                    <BasicTextInput
+                        value={fullName}
+                        onChangeText={setFullName}
+                        placeholder="Full Name"
+                    />
+                    <EmailInput
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Email Address"
+                    />
+                    <PasswordInput
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Password"
+                    />
+                    <BasicTextInput
+                        value={country}
+                        onChangeText={setCountry}
+                        placeholder="Country"
+                    />
+                </View>
 
-                            <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Password</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Enter your password"
-                                    placeholderTextColor={Colors.DarkGray}
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    secureTextEntry
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                />
-                            </View>
+                {/* Main Action Buttons */}
+                <CustomButton
+                    title="Sign up"
+                    onPress={handleSignUp}
+                    variant="filled"
+                    style={{ backgroundColor: Colors.Primary }}
+                />
 
-                            <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Confirm Password</Text>
-                                <TextInput
-                                    style={styles.input}
-                                    placeholder="Confirm your password"
-                                    placeholderTextColor={Colors.DarkGray}
-                                    value={confirmPassword}
-                                    onChangeText={setConfirmPassword}
-                                    secureTextEntry
-                                    autoCapitalize="none"
-                                    autoCorrect={false}
-                                />
-                            </View>
+                <CustomButton
+                    title="Login"
+                    onPress={handleLogin}
+                    variant="white"
+                />
 
-                            <TouchableOpacity
-                                style={[styles.signUpButton, isLoading && styles.signUpButtonDisabled]}
-                                onPress={handleSignUp}
-                                disabled={isLoading}
-                            >
-                                <Text style={styles.signUpButtonText}>
-                                    {isLoading ? 'Creating Account...' : 'Create Account'}
-                                </Text>
-                            </TouchableOpacity>
-                        </View>
+                {/* Divider */}
+                <View style={styles.dividerContainer}>
+                    <View style={styles.divider} />
+                    <Text style={styles.dividerText}>Or</Text>
+                    <View style={styles.divider} />
+                </View>
 
-                        {/* Footer */}
-                        <View style={styles.footer}>
-                            <Text style={styles.footerText}>Already have an account? </Text>
-                            <TouchableOpacity onPress={handleSignIn}>
-                                <Text style={styles.signInText}>Sign In</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                {/* Social Login Buttons */}
+                <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin}>
+                    <Ionicons name="logo-apple" size={24} color={Colors.TextPrimary} />
+                    <Text style={styles.socialButtonText}>Apple</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin}>
+                    <Ionicons name="logo-google" size={24} color={Colors.TextPrimary} />
+                    <Text style={styles.socialButtonText}>Google</Text>
+                </TouchableOpacity>
+
+                {/* Login Link */}
+                <View style={styles.loginLinkContainer}>
+                    <Text style={styles.loginLinkText}>Already have an account? </Text>
+                    <TouchableOpacity onPress={handleLogin}>
+                        <Text style={styles.loginLink}>Login.</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White,
     },
-    keyboardView: {
-        flex: 1,
-    },
     scrollContent: {
         flexGrow: 1,
+        paddingHorizontal: 24
     },
-    content: {
-        flex: 1,
-        paddingHorizontal: 24,
-        paddingVertical: 20,
-        justifyContent: 'center',
+    logoContainer: {
+        // --- FIX: Back to top-left alignment ---
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginBottom: 0,
+        marginTop: 0, // Removed extra top margin
     },
-    header: {
+    logo: {
+        // --- FIX: Small, white icon inside the dark circle ---
+        width: 100,
+        height: 100,
+    },
+    appName: {
+        fontSize: 18,
+        fontFamily: CustomeFonts.Lato_Bold,
+        color: Colors.TextPrimary,
+    },
+    // --- Header Title ---
+    headerContainer: {
         marginBottom: 40,
         alignItems: 'center',
     },
     title: {
         fontSize: 32,
-        fontFamily: customeFonts.Gilroy_ExtraBold,
-        color: Colors.Secondary,
-        marginBottom: 8,
+        fontFamily: CustomeFonts.Gilroy_ExtraBold,
+        color: Colors.TextPrimary,
     },
-    subtitle: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.DarkGray,
+    inputSection: {
+        marginBottom: 16,
     },
-    form: {
-        marginBottom: 40,
+    // --- Divider Styles (Copied from LoginScreen) ---
+    dividerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 24,
     },
-    inputContainer: {
-        marginBottom: 20,
+    divider: {
+        flex: 1,
+        height: 1,
+        backgroundColor: Colors.Border,
     },
-    label: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Bold,
-        color: Colors.Secondary,
-        marginBottom: 8,
+    dividerText: {
+        marginHorizontal: 16,
+        fontSize: 14,
+        color: Colors.TextSecondary,
+        fontFamily: CustomeFonts.Lato_Regular,
     },
-    input: {
-        borderWidth: 1,
-        borderColor: Colors.BorderGray,
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.Secondary,
-        backgroundColor: Colors.Gray,
-    },
-    signUpButton: {
-        backgroundColor: Colors.Primary,
+    // --- Social Button Styles (Copied from LoginScreen) ---
+    socialButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.BackgroundLight,
         borderRadius: 12,
         paddingVertical: 16,
-        alignItems: 'center',
-        marginTop: 10,
-        shadowColor: Colors.Primary,
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
+        marginBottom: 12,
+        borderWidth: 1,
+        borderColor: Colors.Border,
     },
-    signUpButtonDisabled: {
-        opacity: 0.7,
+    socialButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: Colors.TextPrimary,
+        marginLeft: 12,
+        fontFamily: CustomeFonts.Lato_Bold,
     },
-    signUpButtonText: {
-        fontSize: 18,
-        fontFamily: customeFonts.Lato_Bold,
-        color: Colors.White,
-    },
-    footer: {
+    // --- Login Link (Copied and renamed from SignUp Link on LoginScreen) ---
+    loginLinkContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 16,
+        marginBottom: 24,
     },
-    footerText: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.DarkGray,
+    loginLinkText: {
+        fontSize: 14,
+        color: Colors.TextSecondary,
+        fontFamily: CustomeFonts.Lato_Regular,
     },
-    signInText: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Bold,
+    loginLink: {
+        fontSize: 14,
         color: Colors.Primary,
+        fontWeight: '600',
+        fontFamily: CustomeFonts.Lato_Bold,
     },
-}); 
+});
+
+export default SignUpScreen;

@@ -1,205 +1,275 @@
 import React, { useState } from 'react';
 import {
-    StyleSheet,
-    Text,
     View,
-    TextInput,
+    Text,
+    StyleSheet,
+    Image,
     TouchableOpacity,
-    SafeAreaView,
-    KeyboardAvoidingView,
-    Platform,
-    Alert,
+    ScrollView,
 } from 'react-native';
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from '@expo/vector-icons';
 import { router } from "expo-router";
-import Colors from '../../constant/Colors';
-import customeFonts from '../../constant/customeFonts';
+import EmailInput from '../../components/EmailInput';
+import PasswordInput from '../../components/PasswordInput';
+import CustomButton from '../../components/CustomButton';
+import Colors from '../../constant/Colors'; // Importing Colors
+import CustomeFonts from '../../constant/customeFonts'; // Importing Custom Fonts for text styling
 
-export default function LoginScreen({ navigation }) {
+const LoginScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(true);
 
-    const handleLogin = async () => {
-        router.replace("ShopScreen");
-    };
-
-    const handleForgotPassword = () => {
-        Alert.alert('Forgot Password', 'Password reset functionality will be implemented here');
+    const handleLogin = () => {
+        console.log('Login pressed', { email, password, rememberMe });
+        router.push('/ShopScreen'); // Navigate to HomeScreen after login
     };
 
     const handleSignUp = () => {
         router.push('/SignUpScreen');
     };
 
+    const handleForgotPassword = () => {
+        router.push('/ForgotPasswordScreen');
+    };
+
+    const handleAppleLogin = () => {
+        console.log('Apple login pressed');
+    };
+
+    const handleGoogleLogin = () => {
+        console.log('Google login pressed');
+    };
+
     return (
         <SafeAreaView style={styles.container}>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={styles.keyboardView}
-            >
-                <View style={styles.content}>
-                    {/* Header */}
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Welcome Back</Text>
-                        <Text style={styles.subtitle}>Sign in to continue</Text>
-                    </View>
-
-                    {/* Form */}
-                    <View style={styles.form}>
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Email</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter your email"
-                                placeholderTextColor={Colors.DarkGray}
-                                value={email}
-                                onChangeText={setEmail}
-                                keyboardType="email-address"
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                            />
-                        </View>
-
-                        <View style={styles.inputContainer}>
-                            <Text style={styles.label}>Password</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Enter your password"
-                                placeholderTextColor={Colors.DarkGray}
-                                value={password}
-                                onChangeText={setPassword}
-                                secureTextEntry
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                            />
-                        </View>
-
-                        <TouchableOpacity
-                            style={styles.forgotPassword}
-                            onPress={handleForgotPassword}
-                        >
-                            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={[styles.loginButton, isLoading && styles.loginButtonDisabled]}
-                            onPress={handleLogin}
-                            disabled={isLoading}
-                        >
-                            <Text style={styles.loginButtonText}>
-                                {isLoading ? 'Signing In...' : 'Sign In'}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    {/* Footer */}
-                    <View style={styles.footer}>
-                        <Text style={styles.footerText}>Don't have an account? </Text>
-                        <TouchableOpacity onPress={handleSignUp}>
-                            <Text style={styles.signUpText}>Sign Up</Text>
-                        </TouchableOpacity>
-                    </View>
+            <ScrollView contentContainerStyle={styles.scrollContent}>
+                {/* Logo Section - Now Top-Left Aligned with Text */}
+                <View style={styles.logoContainer}>
+                    <Image
+                        source={require('../../assets/icons/car_icon_main.png')}
+                        style={styles.logo}
+                        resizeMode="contain"
+                    />
                 </View>
-            </KeyboardAvoidingView>
+
+                {/* Welcome Text - Aligned to Left, removed unnecessary centering */}
+                <View style={styles.welcomeContainer}>
+                    <Text style={styles.welcomeTitle}>Welcome Back</Text>
+                    <Text style={styles.welcomeSubtitle}>Ready to hit the road?</Text>
+                </View>
+
+                {/* Input Fields */}
+                <View style={styles.inputContainer}>
+                    <EmailInput
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Email/Phone Number"
+                    />
+
+                    <PasswordInput
+                        value={password}
+                        onChangeText={setPassword}
+                        placeholder="Password"
+                    />
+                </View>
+
+                {/* Remember Me & Forgot Password */}
+                <View style={styles.optionsContainer}>
+                    <TouchableOpacity
+                        style={styles.rememberMeContainer}
+                        onPress={() => setRememberMe(!rememberMe)}
+                    >
+                        <View style={[styles.checkbox, rememberMe && styles.checkboxChecked]}>
+                            {rememberMe && <Ionicons name="checkmark" size={18} color={Colors.White} />}
+                        </View>
+                        <Text style={styles.rememberMeText}>Remember Me</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={handleForgotPassword}>
+                        <Text style={styles.forgotPasswordText}>Forgot Password</Text>
+                    </TouchableOpacity>
+                </View>
+
+                {/* Login Button */}
+                <CustomButton
+                    title="Login"
+                    onPress={handleLogin}
+                    variant="filled"
+                    style={{ backgroundColor: Colors.Primary }}
+                />
+
+                {/* Sign Up Button */}
+                <CustomButton
+                    title="Sign up"
+                    onPress={handleSignUp}
+                    variant="white"
+                />
+
+                {/* Divider */}
+                <View style={styles.dividerContainer}>
+                    <View style={styles.divider} />
+                    <Text style={styles.dividerText}>Or</Text>
+                    <View style={styles.divider} />
+                </View>
+
+                {/* Social Login Buttons */}
+                <TouchableOpacity style={styles.socialButton} onPress={handleAppleLogin}>
+                    <Ionicons name="logo-apple" size={24} color={Colors.TextPrimary} />
+                    <Text style={styles.socialButtonText}>Apple</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.socialButton} onPress={handleGoogleLogin}>
+                    <Ionicons name="logo-google" size={24} color={Colors.TextPrimary} />
+                    <Text style={styles.socialButtonText}>Google</Text>
+                </TouchableOpacity>
+
+                {/* Sign Up Link */}
+                <View style={styles.signUpLinkContainer}>
+                    <Text style={styles.signUpLinkText}>Don't have an account? </Text>
+                    <TouchableOpacity onPress={handleSignUp}>
+                        <Text style={styles.signUpLink}>Sign Up.</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: Colors.White,
     },
-    keyboardView: {
-        flex: 1,
-    },
-    content: {
-        flex: 1,
+    scrollContent: {
+        flexGrow: 1,
         paddingHorizontal: 24,
-        justifyContent: 'center',
     },
-    header: {
-        marginBottom: 40,
+    logoContainer: {
+        // --- FIX: Back to top-left alignment ---
+        flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginBottom: 0,
+        marginTop: 0, // Removed extra top margin
     },
-    title: {
+    logo: {
+        // --- FIX: Small, white icon inside the dark circle ---
+        width: 100,
+        height: 100,
+    },
+    appName: {
+        fontSize: 18,
+        fontFamily: CustomeFonts.Lato_Bold, // Added a font
+        color: Colors.TextPrimary,
+    },
+    welcomeContainer: {
+        marginBottom: 32,
+        alignItems: 'flex-start', // Aligned to left
+    },
+    welcomeTitle: {
         fontSize: 32,
-        fontFamily: customeFonts.Gilroy_ExtraBold,
-        color: Colors.Secondary,
-        marginBottom: 8,
+        fontFamily: CustomeFonts.Gilroy_ExtraBold, // Added a font
+        color: Colors.TextPrimary,
+        marginBottom: 4,
+        textAlign: 'left',
     },
-    subtitle: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.DarkGray,
-    },
-    form: {
-        marginBottom: 40,
+    welcomeSubtitle: {
+        fontSize: 32,
+        fontFamily: CustomeFonts.Gilroy_ExtraBold, // Added a font
+        color: Colors.TextPrimary,
+        textAlign: 'left',
     },
     inputContainer: {
-        marginBottom: 20,
+        marginBottom: 16,
     },
-    label: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Bold,
-        color: Colors.Secondary,
-        marginBottom: 8,
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: Colors.BorderGray,
-        borderRadius: 12,
-        paddingHorizontal: 16,
-        paddingVertical: 14,
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.Secondary,
-        backgroundColor: Colors.Gray,
-    },
-    forgotPassword: {
-        alignSelf: 'flex-end',
+    optionsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         marginBottom: 24,
+    },
+    rememberMeContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    checkbox: {
+        width: 24,
+        height: 24,
+        borderRadius: 6,
+        borderWidth: 2,
+        borderColor: Colors.Border,
+        marginRight: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    checkboxChecked: {
+        backgroundColor: Colors.Primary,
+        borderColor: Colors.Primary,
+    },
+    rememberMeText: {
+        fontSize: 14,
+        color: Colors.TextSecondary,
     },
     forgotPasswordText: {
         fontSize: 14,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.Primary,
+        color: Colors.TextSecondary,
+        fontWeight: '500',
+        fontFamily: CustomeFonts.Lato_Regular, // Added a font
     },
-    loginButton: {
-        backgroundColor: Colors.Primary,
+    dividerContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 24,
+    },
+    divider: {
+        flex: 1,
+        height: 1,
+        backgroundColor: Colors.Border,
+    },
+    dividerText: {
+        marginHorizontal: 16,
+        fontSize: 14,
+        color: Colors.TextSecondary,
+        fontFamily: CustomeFonts.Lato_Regular, // Added a font
+    },
+    socialButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: Colors.BackgroundLight,
         borderRadius: 12,
         paddingVertical: 16,
-        alignItems: 'center',
-        shadowColor: Colors.Primary,
-        shadowOffset: {
-            width: 0,
-            height: 4,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 8,
-        elevation: 8,
+        marginBottom: 12,
+        borderWidth: 1,
+        borderColor: Colors.Border,
     },
-    loginButtonDisabled: {
-        opacity: 0.7,
+    socialButtonText: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: Colors.TextPrimary,
+        marginLeft: 12,
+        fontFamily: CustomeFonts.Lato_Bold, // Added a font
     },
-    loginButtonText: {
-        fontSize: 18,
-        fontFamily: customeFonts.Lato_Bold,
-        color: Colors.White,
-    },
-    footer: {
+    signUpLinkContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 16,
+        marginBottom: 24,
     },
-    footerText: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Regular,
-        color: Colors.DarkGray,
+    signUpLinkText: {
+        fontSize: 14,
+        color: Colors.TextSecondary,
+        fontFamily: CustomeFonts.Lato_Regular, // Added a font
     },
-    signUpText: {
-        fontSize: 16,
-        fontFamily: customeFonts.Lato_Bold,
+    signUpLink: {
+        fontSize: 14,
         color: Colors.Primary,
+        fontWeight: '600',
+        fontFamily: CustomeFonts.Lato_Bold, // Added a font
     },
-}); 
+});
+
+export default LoginScreen;

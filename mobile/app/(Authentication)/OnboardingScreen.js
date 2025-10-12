@@ -3,7 +3,6 @@ import {
     View,
     StyleSheet,
     Text,
-    TouchableOpacity,
     StatusBar,
     ImageBackground,
     Dimensions,
@@ -16,6 +15,7 @@ import { router } from "expo-router";
 
 import Colors from "../../constant/Colors";
 import CustomeFonts from "../../constant/customeFonts";
+import CustomButton from "../../components/CustomButton";
 
 const { width, height } = Dimensions.get("window");
 
@@ -32,7 +32,7 @@ const onboardingData = [
         title: "Lets Start A New Experience",
         subtitle: "With Car rental.",
         description: "Discover your next adventure with Qent. we're here to provide you with a seamless car rental experience. Let's get started on your journey.",
-        backgroundImage: require("../../assets/background_images/background_1.png"),
+        backgroundImage: require("../../assets/background_images/background_2.png"),
     },
 ];
 
@@ -118,15 +118,10 @@ export default function OnboardingScreen() {
                                 ))}
                             </View>
 
-                            <TouchableOpacity
-                                style={styles.button}
+                            <CustomButton
+                                title={currentIndex === onboardingData.length - 1 ? "Get Started" : "Next"}
                                 onPress={handleNext}
-                                activeOpacity={0.8}
-                            >
-                                <Text style={styles.buttonText}>
-                                    {currentIndex === onboardingData.length - 1 ? "Get Started" : "Next"}
-                                </Text>
-                            </TouchableOpacity>
+                            />
                         </View>
                     </SafeAreaView>
                 </LinearGradient>
@@ -263,27 +258,5 @@ const styles = StyleSheet.create({
         width: 12,
         height: 8,
         borderRadius: 4,
-    },
-    button: {
-        backgroundColor: "#3C3C3C",
-        borderRadius: 25,
-        height: 56,
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0,
-        shadowRadius: 0,
-        elevation: 0,
-    },
-    buttonText: {
-        fontFamily: CustomeFonts.Gilroy_ExtraBold,
-        fontSize: 18,
-        color: Colors.White,
-        fontWeight: "bold",
     },
 });
