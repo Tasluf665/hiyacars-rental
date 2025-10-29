@@ -1,43 +1,72 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { Tabs } from 'expo-router';
 import Colors from "../../constant/Colors";
 
 export default () => {
     return (
-        <Tabs screenOptions={{
-            tabBarActiveTintColor: Colors.Primary,
-            tabBarInactiveTintColor: Colors.DarkGray,
-        }}>
+        <Tabs
+            screenOptions={{
+                tabBarActiveTintColor: Colors.White,
+                tabBarInactiveTintColor: '#8E8E93',
+                tabBarShowLabel: false,
+                tabBarStyle: {
+                    position: 'absolute',
+                    bottom: 25,
+                    left: 20,
+                    right: 20,
+                    elevation: 0,
+                    backgroundColor: '#2C3333',
+                    borderRadius: 40,
+                    height: 70,
+                    paddingBottom: 0,
+                    paddingTop: 0,
+                    borderTopWidth: 0,
+                    shadowColor: '#000',
+                    shadowOffset: {
+                        width: 0,
+                        height: 10,
+                    },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 15,
+                    marginHorizontal: 20
+                },
+                tabBarItemStyle: {
+                    paddingVertical: 15,
+                },
+            }}
+        >
             <Tabs.Screen
-                name="ShopScreen"
+                name="HomeScreen"
                 options={{
-                    title: "Shop",
+                    title: "Home",
                     headerShown: false,
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="home" color={color} />,
+                    tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
                 }}
             />
             <Tabs.Screen
-                name="ExploreScreen"
+                name="SearchScreen"
                 options={{
-                    title: "Explore",
+                    title: "Search",
                     headerShown: false,
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
+                    tabBarIcon: ({ color }) => <FontAwesome size={24} name="search" color={color} />,
                 }}
             />
             <Tabs.Screen
-                name="CartScreen"
+                name="MessageScreen"
                 options={{
-                    title: "Cart",
+                    title: "Message",
                     headerShown: false,
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="shopping-cart" color={color} />,
+                    tabBarIcon: ({ color }) => <Feather size={24} name="mail" color={color} />,
                 }}
             />
             <Tabs.Screen
-                name="FavouriteScreen"
+                name="NotificationScreen"
                 options={{
-                    title: "Favorites",
+                    title: "Notification",
                     headerShown: false,
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="star" color={color} />,
+                    tabBarIcon: ({ color }) => <Ionicons name="notifications-outline" size={24} color={color} />,
                 }}
             />
             <Tabs.Screen
@@ -45,7 +74,7 @@ export default () => {
                 options={{
                     title: "Account",
                     headerShown: false,
-                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="cog" color={color} />,
+                    tabBarIcon: ({ color }) => <Feather size={24} name="user" color={color} />,
                 }}
             />
         </Tabs>

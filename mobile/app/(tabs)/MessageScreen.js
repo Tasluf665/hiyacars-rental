@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function ExploreScreen() {
+export default function MessageScreen() {
     return (
         <View style={styles.container}>
-            <Text>ExploreScreen</Text>
+            <Text>MessageScreen</Text>
         </View>
     )
 }

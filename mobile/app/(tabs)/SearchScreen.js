@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function FavouriteScreen() {
+export default function SearchScreen() {
     return (
         <View style={styles.container}>
-            <Text>FavouriteScreen</Text>
+            <Text>SearchScreen</Text>
         </View>
     )
 }

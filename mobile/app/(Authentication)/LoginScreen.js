@@ -23,7 +23,7 @@ const LoginScreen = () => {
 
     const handleLogin = () => {
         console.log('Login pressed', { email, password, rememberMe });
-        router.push('/ShopScreen'); // Navigate to HomeScreen after login
+        router.push('/HomeScreen'); // Navigate to HomeScreen after login
     };
 
     const handleSignUp = () => {

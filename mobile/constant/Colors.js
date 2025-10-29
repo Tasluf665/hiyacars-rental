@@ -16,6 +16,8 @@ const Colors = {
   // Input and Border Colors
   InputBackground: "#F6F6F6", // A clean light gray for input fields (as seen on the booking screen).
   Border: "#E2E2E2", // For divider lines and input borders.
+
+
 };
 
 export default Colors;

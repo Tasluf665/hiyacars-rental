@@ -1,10 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-export default function ShopScreen() {
+export default function NotificationScreen() {
     return (
         <View style={styles.container}>
-            <Text>ShopScreen</Text>
+            <Text>NotificationScreen</Text>
         </View>
     )
 }
