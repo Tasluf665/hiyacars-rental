@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const CarCard = ({ item, index, onFavoritePress, onBookPress }) => {
     return (
@@ -18,21 +19,26 @@ const CarCard = ({ item, index, onFavoritePress, onBookPress }) => {
                     />
                 </TouchableOpacity>
 
-                <Image source={item.image} style={styles.carImage} resizeMode="contain" />
+                <TouchableOpacity
+                    onPress={() => router.push(`/Home/CarDetailsScreen?carId=${item.id}`)}>
+                    <>
+                        <Image source={item.image} style={styles.carImage} resizeMode="contain" />
 
-                <Text style={styles.carName}>{item.name}</Text>
+                        <Text style={styles.carName}>{item.name}</Text>
 
-                {item.rating && (
-                    <View style={styles.ratingContainer}>
-                        <Text style={styles.rating}>{item.rating}</Text>
-                        <Ionicons name="star" size={14} color="#FFA500" />
-                    </View>
-                )}
+                        {item.rating && (
+                            <View style={styles.ratingContainer}>
+                                <Text style={styles.rating}>{item.rating}</Text>
+                                <Ionicons name="star" size={14} color="#FFA500" />
+                            </View>
+                        )}
 
-                <View style={styles.carDetails}>
-                    <Ionicons name="location-outline" size={14} color="#666" />
-                    <Text style={styles.location}>{item.location}</Text>
-                </View>
+                        <View style={styles.carDetails}>
+                            <Ionicons name="location-outline" size={14} color="#666" />
+                            <Text style={styles.location}>{item.location}</Text>
+                        </View>
+                    </>
+                </TouchableOpacity>
 
                 <View style={styles.carFooter}>
                     <View style={styles.seatsContainer}>

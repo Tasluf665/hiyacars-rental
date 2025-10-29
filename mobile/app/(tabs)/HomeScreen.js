@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from '../../constant/Colors';
 import CarCard from '../../components/CarCard';
 import { cars, categories, nearbyCars } from '../../constant/DummyData';
+import { router } from 'expo-router';
 
 
 
@@ -30,7 +31,7 @@ export default function HomeScreen() {
     };
 
     const handleBookPress = (car) => {
-        console.log('Book pressed for:', car.name);
+        router.push(`/Home/BookingDetailsScreen?carId=${car.id}`);
         // Navigate to booking screen or show booking modal
     };
 

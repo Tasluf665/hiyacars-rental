@@ -1,7 +1,14 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 
-const CustomButton = ({ title, onPress, variant = 'filled', style }) => {
+const CustomButton = ({
+    title,
+    onPress,
+    variant = 'filled',
+    style,
+    icon,
+    iconPosition = 'right'
+}) => {
     const getButtonStyle = () => {
         switch (variant) {
             case 'filled':
@@ -34,7 +41,15 @@ const CustomButton = ({ title, onPress, variant = 'filled', style }) => {
             onPress={onPress}
             activeOpacity={0.8}
         >
-            <Text style={[styles.buttonText, getTextStyle()]}>{title}</Text>
+            <View style={styles.buttonContent}>
+                {icon && iconPosition === 'left' && (
+                    <View style={styles.iconLeft}>{icon}</View>
+                )}
+                <Text style={[styles.buttonText, getTextStyle()]}>{title}</Text>
+                {icon && iconPosition === 'right' && (
+                    <View style={styles.iconRight}>{icon}</View>
+                )}
+            </View>
         </TouchableOpacity>
     );
 };
@@ -46,6 +61,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 16,
+    },
+    buttonContent: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    iconLeft: {
+        marginRight: 8,
+    },
+    iconRight: {
+        marginLeft: 8,
+        marginTop: 2,
     },
     filledButton: {
         backgroundColor: '#374151',
